@@ -1,4 +1,56 @@
-<button class="btn btn-primary">Add car</button>
+<!--пеердавать из кмпонента в шаблон-->
+<button [disabled]="!canAddCard" class="btn btn-primary">Add car</button>
 <hr>
-<app-car></app-car>
-<app-car></app-car>
+
+
+<!--передавать мз шаблона в компонент-->
+<input type="text" class="form-control" [(ngModel)]="carName">
+<button class="btn btn-primary" (click)="addCar()">Add car</button>
+<p *ngIf="!addCarStatus; else successStatus ">car not added</p>
+<ng-template #successStatus>
+  <p>car added</p>
+</ng-template>
+
+<app-car *ngFor="let car of cars"></app-car>
+<ul>
+  <li *ngFor="let item of items; let indx= index">
+    <b>{{indx + 1}}</b>
+    <p>{{item.name}}</p>
+  </li>
+</ul>
+
+<ul>
+  <li *ngFor="let car of cars; let indx= index">
+    <div [ngStyle]="{backgroundColor: (indx+1) % 2===0?'red':'purple', color:'white'}"
+         [ngClass]="{'bigText':setBigText(car)}"
+    >
+      <strong>{{indx + 1}}</strong> - {{car}}
+    </div>
+  </li>
+</ul>
+
+<ul>
+  <b *ngFor="let itemData of itemsData; let indx= index">
+    <p>{{indx + 1}} - {{itemData | date: 'short'}}</p>
+    <p>{{indx + 1}} - {{itemData | uppercase }}</p>
+  </b>
+</ul>
+
+
+<!--#myInput - референция на данный элемент как ссылка-->
+<hr>
+<input type="text" class="form-control" #myInput (input)="onKeyUp1(myInput.value)">
+<p>{{inputText1}}</p>
+
+<!--условие на определенную клавишу-->
+<hr>
+<input type="text" class="form-control" (keyup.enter)="onKeyUp2($event)">
+<p>{{inputText2}}</p>
+
+<!--Two-way banding передавать даннфе в обе стороны (одовременно менять и шаблон и компонент)-->
+<hr>
+<input type="text" class="form-control" (keyup.enter)="onKeyUp2($event)">
+<input type="text" class="form-control" [(ngModel)]="inputText2">
+<p>{{inputText2}}</p>
+
+
